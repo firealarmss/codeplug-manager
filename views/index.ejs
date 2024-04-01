@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codeplug Search</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></scrip>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<body>
+<div class="container mt-5">
+    <h1>Find a Codeplug</h1>
+    <form action="/search" method="get" class="card card-body">
+        <div class="form-group">
+            <label for="brand">Brand:</label>
+            <select id="brand" name="brand" class="form-control" required>
+                <option value="">Select a brand</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="model">Model:</label>
+            <select id="model" name="model" class="form-control" required disabled>
+                <option value="">Select a model</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="band">Band:</label>
+            <select id="band" name="band" class="form-control" required disabled>
+                <option value="">Select a band</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+<script>
+    const data = <%- data %>;
+
+    $(document).ready(function() {
+        const brandSelect = $('#brand');
+        const modelSelect = $('#model');
+        const bandSelect = $('#band');
+
+        Object.keys(data).sort().forEach(function(brand) {
+            brandSelect.append($('<option>', {
+                value: brand,
+                text: brand
+            }));
+        });
+
+        brandSelect.change(function() {
+            modelSelect.empty().append($('<option>', { text: 'Select a model' })).prop('disabled', false);
+            bandSelect.empty().append($('<option>', { text: 'Select a band' })).prop('disabled', true);
+            const models = data[this.value];
+
+            if (!models){
+                return;
+            }
+
+            Object.keys(models).sort().forEach(function(model) {
+                modelSelect.append($('<option>', {
+                    value: model,
+                    text: model
+                }));
+            });
+        });
+
+        modelSelect.change(function() {
+            bandSelect.empty().append($('<option>', { text: 'Select a band' })).prop('disabled', false);
+            const bands = data[brandSelect.val()][this.value];
+            bands.forEach(function(band) {
+                bandSelect.append($('<option>', {
+                    value: band,
+                    text: band
+                }));
+            });
+        });
+    });
+</script>
+</body>
+</html>
