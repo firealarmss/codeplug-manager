@@ -4,8 +4,8 @@ node_modules
 db/*.db
 codeplugs/**
 codeplugs/*
-!configs/.gitkeep
 codeplugs
+!configs/.gitkeep
 uploads/**
 uploads/*
 uploads
