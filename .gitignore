@@ -3,7 +3,7 @@ node_modules
 /dist
 db/*.db
 codeplugs/*
-!configs/.gitkeep
+!codeplugs/.gitkeep
 uploads/**
 uploads/*
 uploads
